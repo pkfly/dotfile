@@ -47,6 +47,7 @@ set lazyredraw
 set breakindent
 set shell=cmd.exe
 set fileencodings=utf-8,cp932,iso-2022-jp,sjis
+let g:vimproc#download_windows_dll = 1
 :source $VIMRUNTIME/macros/matchit.vim
 
 
@@ -67,7 +68,7 @@ if dein#load_state('C:/Users/t-sakai.DYNATECH/.cache/dein/')
   call dein#add('C:/Users/t-sakai.DYNATECH/.cache/dein/repos/github.com/Shougo/dein.vim')
 
   " Add or remove your plugins here:
-  call dein#add('Shougo/vimproc')
+  call dein#add('Shougo/vimproc', {'build' : 'make'})
   call dein#add('Shougo/neosnippet-snippets')
   call dein#add('Shougo/neocomplete.vim')
   call dein#add('sjl/badwolf')
@@ -78,13 +79,14 @@ if dein#load_state('C:/Users/t-sakai.DYNATECH/.cache/dein/')
   call dein#add('scrooloose/syntastic')
 
   "haskell
-  call dein#add('neovimhasklell/haskell-vim')
+  call dein#add('neovimhaskell/haskell-vim')
+  call dein#add('kana/vim-filetype-haskell')
   call dein#add('enomsg/vim-haskellConcealPlus')
   call dein#add('eagletmt/ghcmod-vim')
   call dein#add('eagletmt/neco-ghc')
   call dein#add('Twinside/vim-hoogle')
   call dein#add('mpickering/hlint-refactor-vim')
-
+  call dein#check_clean()
   
   " You can specify revision/branch/tag.
   "call dein#add('Shougo/vimshell', { 'rev': '3787e5' })
