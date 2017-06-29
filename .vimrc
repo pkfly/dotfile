@@ -67,9 +67,25 @@ if dein#load_state('C:/Users/t-sakai.DYNATECH/.cache/dein/')
   call dein#add('C:/Users/t-sakai.DYNATECH/.cache/dein/repos/github.com/Shougo/dein.vim')
 
   " Add or remove your plugins here:
+  call dein#add('Shougo/vimproc')
+  call dein#add('Shougo/neosnippet-snippets')
+  call dein#add('Shougo/neocomplete.vim')
   call dein#add('sjl/badwolf')
   call dein#add('vim-airline/vim-airline')
   call dein#add('scrooloose/nerdtree')
+  call dein#add('thinca/vim-quickrun')
+  call dein#add('majutsushi/tagbar')
+  call dein#add('scrooloose/syntastic')
+
+  "haskell
+  call dein#add('neovimhasklell/haskell-vim')
+  call dein#add('enomsg/vim-haskellConcealPlus')
+  call dein#add('eagletmt/ghcmod-vim')
+  call dein#add('eagletmt/neco-ghc')
+  call dein#add('Twinside/vim-hoogle')
+  call dein#add('mpickering/hlint-refactor-vim')
+
+  
   " You can specify revision/branch/tag.
   "call dein#add('Shougo/vimshell', { 'rev': '3787e5' })
 
@@ -90,3 +106,35 @@ endif
 
 "End dein Scripts-------------------------
 colorscheme badwolf
+set tags=tags;/,codex.tags;/
+let g:tagbar_type_haskell = {
+    \ 'ctagsbin'  : 'hasktags',
+    \ 'ctagsargs' : '-x -c -o-',
+    \ 'kinds'     : [
+        \  'm:modules:0:1',
+        \  'd:data: 0:1',
+        \  'd_gadt: data gadt:0:1',
+        \  't:type names:0:1',
+        \  'nt:new types:0:1',
+        \  'c:classes:0:1',
+        \  'cons:constructors:1:1',
+        \  'c_gadt:constructor gadt:1:1',
+        \  'c_a:constructor accessors:1:1',
+        \  'ft:function types:1:1',
+        \  'fi:function implementations:0:1',
+        \  'o:others:0:1'
+    \ ],
+    \ 'sro'        : '.',
+    \ 'kind2scope' : {
+        \ 'm' : 'module',
+        \ 'c' : 'class',
+        \ 'd' : 'data',
+        \ 't' : 'type'
+    \ },
+    \ 'scope2kind' : {
+        \ 'module' : 'm',
+        \ 'class'  : 'c',
+        \ 'data'   : 'd',
+        \ 'type'   : 't'
+    \ }
+\ }
