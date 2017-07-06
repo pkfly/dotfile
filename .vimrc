@@ -45,11 +45,26 @@ set noimdisable
 set noimcmdline
 set lazyredraw
 set breakindent
-set shell=cmd.exe
-set fileencodings=utf-8,cp932,iso-2022-jp,sjis
-let g:vimproc#download_windows_dll = 1
-:source $VIMRUNTIME/macros/matchit.vim
 
+set fileencodings=utf-8,cp932,iso-2022-jp,sjis
+if has('win32')
+  let ostype = "Win"
+  let g:vimproc#download_windows_dll = 1
+  let g:path = "C:/Users/t-sakai.DYNATECH/.cache/dein/repos/github.com/Shougo/dein.vim"
+  let g:loadpath = "C:/Users/t-sakai.DYNATECH/.cache/dein/"
+  set shell=cmd.exe
+elseif has ('mac')
+  let ostype = 'Mac'
+  let g:path = '/.deinvim/dein/repos/github.com/Shougo/dein.vim/'
+  let g:loadpath = '/.cache/dein/'
+else
+  let ostype = system('uname')
+  let g:path = $HOME . '/.cache/dein/repos/github.com/Shougo/dein.vim'
+  let g:loadpath = $HOME . '/.cache/dein/'
+  let g:expath = expand('~/.deinvim/dein/repos/github.com/Shougo/dein.vim/')
+endif
+
+:source $VIMRUNTIME/macros/matchit.vim
 
 "dein Scripts-----------------------------
 if &compatible
@@ -57,15 +72,14 @@ if &compatible
 endif
 
 " Required:
-set runtimepath+=C:/Users/t-sakai.DYNATECH/.cache/dein/repos/github.com/Shougo/dein.vim
-
+set runtimepath+=expath
 " Required:
-if dein#load_state('C:/Users/t-sakai.DYNATECH/.cache/dein/')
-  call dein#begin('C:/Users/t-sakai.DYNATECH/.cache/dein/')
+if dein#load_state('/home/takumi/.cache/dein/')
+  call dein#begin('/home/takumi/.cache/dein/')
 
   " Let dein manage dein
   " Required:
-  call dein#add('C:/Users/t-sakai.DYNATECH/.cache/dein/repos/github.com/Shougo/dein.vim')
+  call dein#add(expath)
 
   " Add or remove your plugins here:
   call dein#add('Shougo/vimproc', {'build' : 'make'})
@@ -78,6 +92,9 @@ if dein#load_state('C:/Users/t-sakai.DYNATECH/.cache/dein/')
   call dein#add('thinca/vim-quickrun')
   call dein#add('majutsushi/tagbar')
   call dein#add('scrooloose/syntastic')
+
+  "collors
+  call dein#add('dracula/vim')
 
   "haskell
   call dein#add('neovimhaskell/haskell-vim')
@@ -108,7 +125,7 @@ if dein#check_install()
 endif
 
 "End dein Scripts-------------------------
-colorscheme badwolf
+colorscheme dracula
 set tags=tags;/,codex.tags;/
 let g:tagbar_type_haskell = {
     \ 'ctagsbin'  : 'hasktags',
