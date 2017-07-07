@@ -45,6 +45,7 @@ set noimdisable
 set noimcmdline
 set lazyredraw
 set breakindent
+set t_Co=256
 
 set fileencodings=utf-8,cp932,iso-2022-jp,sjis
 if has('win32')
@@ -59,9 +60,8 @@ elseif has ('mac')
   let g:loadpath = '/.cache/dein/'
 else
   let ostype = system('uname')
-  let g:path = $HOME . '/.cache/dein/repos/github.com/Shougo/dein.vim'
-  let g:loadpath = $HOME . '/.cache/dein/'
-  let g:expath = expand('~/.deinvim/dein/repos/github.com/Shougo/dein.vim/')
+  let g:expath = expand('~/repos/github.com/Shougo/dein.vim')
+  let g:homepath = '/home/takumi/'
 endif
 
 :source $VIMRUNTIME/macros/matchit.vim
@@ -72,10 +72,10 @@ if &compatible
 endif
 
 " Required:
-set runtimepath+=expath
+set runtimepath+=/home/takumi//repos/github.com/Shougo/dein.vim
 " Required:
-if dein#load_state('/home/takumi/.cache/dein/')
-  call dein#begin('/home/takumi/.cache/dein/')
+if dein#load_state(homepath)
+  call dein#begin(homepath)
 
   " Let dein manage dein
   " Required:
@@ -86,7 +86,6 @@ if dein#load_state('/home/takumi/.cache/dein/')
   call dein#add('Shougo/neosnippet-snippets')
   call dein#add('Shougo/neocomplete.vim')
   call dein#add('Shougo/neocomplcache.vim')
-  call dein#add('sjl/badwolf')
   call dein#add('vim-airline/vim-airline')
   call dein#add('scrooloose/nerdtree')
   call dein#add('thinca/vim-quickrun')
@@ -95,6 +94,7 @@ if dein#load_state('/home/takumi/.cache/dein/')
 
   "collors
   call dein#add('dracula/vim')
+  call dein#add('sjl/badwolf')
 
   "haskell
   call dein#add('neovimhaskell/haskell-vim')
@@ -158,3 +158,76 @@ let g:tagbar_type_haskell = {
         \ 'type'   : 't'
     \ }
 \ }
+let g:neocomplecache_enable_at_startu=1
+let g:haskellmode_completion_ghc = 0
+autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
+"Note: This option must be set in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
+" Disable AutoComplPop.
+let g:acp_enableAtStartup = 0
+" Use neocomplete.
+let g:neocomplete#enable_at_startup = 1
+" Use smartcase.
+let g:neocomplete#enable_smart_case = 1
+" Set minimum syntax keyword length.
+let g:neocomplete#sources#syntax#min_keyword_length = 3
+
+" Define dictionary.
+let g:neocomplete#sources#dictionary#dictionaries = {
+    \ 'default' : '',
+    \ 'vimshell' : $HOME.'/.vimshell_hist',
+    \ 'scheme' : $HOME.'/.gosh_completions'
+        \ }
+
+" Define keyword.
+if !exists('g:neocomplete#keyword_patterns')
+    let g:neocomplete#keyword_patterns = {}
+endif
+let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+
+" Plugin key-mappings.
+inoremap <expr><C-g>     neocomplete#undo_completion()
+inoremap <expr><C-l>     neocomplete#complete_common_string()
+
+" Recommended key-mappings.
+" <CR>: close popup and save indent.
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+  return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
+  " For no inserting <CR> key.
+  "return pumvisible() ? "\<C-y>" : "\<CR>"
+endfunction
+" <TAB>: completion.
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+" <C-h>, <BS>: close popup and delete backword char.
+inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+" Close popup by <Space>.
+"inoremap <expr><Space> pumvisible() ? "\<C-y>" : "\<Space>"
+
+" AutoComplPop like behavior.
+"let g:neocomplete#enable_auto_select = 1
+
+" Shell like behavior(not recommended).
+"set completeopt+=longest
+"let g:neocomplete#enable_auto_select = 1
+"let g:neocomplete#disable_auto_complete = 1
+"inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
+
+" Enable omni completion.
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+
+" Enable heavy omni completion.
+if !exists('g:neocomplete#sources#omni#input_patterns')
+  let g:neocomplete#sources#omni#input_patterns = {}
+endif
+"let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+"let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+"let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+
+" For perlomni.vim setting.
+" https://github.com/c9s/perlomni.vim
+let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
